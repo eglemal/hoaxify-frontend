@@ -7,7 +7,13 @@ const configureStore = (addLogger = true) => {
   const middleware = addLogger
     ? applyMiddleware(thunk, logger)
     : applyMiddleware(thunk);
-  return createStore(authReducer, middleware);
+  const store = createStore(authReducer, middleware);
+
+  store.subscribe(() => {
+    localStorage.setItem("hoax-auth", JSON.stringify(store.getState()));
+  });
+
+  return store;
 };
 
 export default configureStore;
