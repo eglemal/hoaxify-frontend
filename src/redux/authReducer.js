@@ -12,7 +12,7 @@ export default function authReducer(state = initialState, action) {
     return { ...initialState };
   } else if (action.type === "login-success") {
     return {
-      ...action.payload,
+      ...action.payLoad,
       isLoggedIn: true,
     };
   }
