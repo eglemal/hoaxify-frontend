@@ -15,6 +15,33 @@ const mockedEmptySuccessResponse = {
   },
 };
 
+const mockSuccessGetSinglePage = {
+  data: {
+    content: [
+      {
+        username: "user1",
+        displayName: "display1",
+        image: "",
+      },
+      {
+        username: "user2",
+        displayName: "display2",
+        image: "",
+      },
+      {
+        username: "user3",
+        displayName: "display3",
+        image: "",
+      },
+    ],
+    number: 0,
+    first: true,
+    last: true,
+    size: 3,
+    totalPages: 1,
+  },
+};
+
 describe("UserList", () => {
   describe("Layout", () => {
     it("has header of Users", () => {
@@ -31,6 +58,13 @@ describe("UserList", () => {
         .mockResolvedValue(mockedEmptySuccessResponse);
       setup();
       expect(apiCalls.listUsers).toHaveBeenCalledTimes(1);
+    });
+    it("calls listUsers method with page zero and size three", () => {
+      apiCalls.listUsers = jest
+        .fn()
+        .mockResolvedValue(mockedEmptySuccessResponse);
+      setup();
+      expect(apiCalls.listUsers).toHaveBeenCalledWith({ page: 0, size: 3 });
     });
   });
 });
