@@ -3,6 +3,7 @@ import {
   render,
   fireEvent,
   waitForDomChange,
+  waitFor,
   waitForElement,
   queryByText,
 } from "@testing-library/react";
@@ -190,10 +191,14 @@ describe("UserSignupPage", () => {
       const { queryByText } = setupForSubmit({ actions });
       fireEvent.click(button);
 
-      await waitForDomChange();
+      // await waitFor();
 
-      const spinner = queryByText("Loading...");
-      expect(spinner).not.toBeInTheDocument();
+      // const spinner = queryByText("Loading...");
+      // expect(spinner).not.toBeInTheDocument();
+
+      await waitFor(() =>
+        expect(queryByText("Loading...")).not.toBeInTheDocument()
+      );
     });
 
     it("hides spinner after api call finishes with error", async () => {
@@ -211,10 +216,9 @@ describe("UserSignupPage", () => {
       const { queryByText } = setupForSubmit({ actions });
       fireEvent.click(button);
 
-      await waitForDomChange();
-
-      const spinner = queryByText("Loading...");
-      expect(spinner).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(queryByText("Loading...")).not.toBeInTheDocument()
+      );
     });
 
     it("displays validation error for displayName when error is received for the field", async () => {
@@ -347,9 +351,7 @@ describe("UserSignupPage", () => {
       setupForSubmit({ actions, history });
       fireEvent.click(button);
 
-      await waitForDomChange();
-
-      expect(history.push).toHaveBeenCalledWith("/");
+      await waitFor(() => expect(history.push).toHaveBeenCalledWith("/"));
     });
   });
 });

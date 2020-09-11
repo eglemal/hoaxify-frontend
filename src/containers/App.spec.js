@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitForElement } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "./App";
 import { Provider } from "react-redux";
@@ -122,8 +122,7 @@ describe("App", () => {
     });
     fireEvent.click(button);
 
-    const myProfileLink = await waitForElement(() => queryByText("My Profile"));
-    expect(myProfileLink).toBeInTheDocument();
+    await waitFor(() => expect(queryByText("My Profile")).toBeInTheDocument());
   });
 
   it("displays My Profile on TopBar after signup success", async () => {
@@ -156,8 +155,7 @@ describe("App", () => {
       });
     fireEvent.click(button);
 
-    const myProfileLink = await waitForElement(() => queryByText("My Profile"));
-    expect(myProfileLink).toBeInTheDocument();
+    await waitFor(() => expect(queryByText("My Profile")).toBeInTheDocument());
   });
 
   it("saves logged in user data to localStorage after login success", async () => {
@@ -177,7 +175,8 @@ describe("App", () => {
     });
     fireEvent.click(button);
 
-    await waitForElement(() => queryByText("My Profile"));
+    await waitFor(() => queryByText("My Profile"));
+
     const dataInStorage = JSON.parse(localStorage.getItem("hoax-auth"));
     expect(dataInStorage).toEqual({
       id: 1,
@@ -223,7 +222,7 @@ describe("App", () => {
     });
     fireEvent.click(button);
 
-    await waitForElement(() => queryByText("My Profile"));
+    await waitFor(() => queryByText("My Profile"));
     const axiosAuthorization = axios.defaults.headers.common["Authorization"];
 
     const encoded = btoa("user1:P4ssword");
