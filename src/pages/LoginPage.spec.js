@@ -4,6 +4,7 @@ import {
   fireEvent,
   waitForElement,
   waitForDomChange,
+  waitFor,
 } from "@testing-library/react";
 import { LoginPage } from "./LoginPage";
 
@@ -145,8 +146,10 @@ describe("LoginPage", () => {
         const { queryByText } = setupForSubmit({ actions });
         fireEvent.click(button);
 
-        const alert = await waitForElement(() => queryByText("Login failed"));
-        expect(alert).toBeInTheDocument();
+        await waitFor(() => {
+          alert = queryByText("Login failed");
+          expect(alert).toBeInTheDocument();
+        });
       });
 
       it("clears alert when user changes username", async () => {
@@ -162,7 +165,7 @@ describe("LoginPage", () => {
         const { queryByText } = setupForSubmit({ actions });
         fireEvent.click(button);
 
-        await waitForElement(() => queryByText("Login failed"));
+        await waitFor(() => queryByText("Login failed"));
         fireEvent.change(usernameInput, changeEvent("updated-username"));
 
         const alert = queryByText("Login failed");
@@ -182,7 +185,7 @@ describe("LoginPage", () => {
         const { queryByText } = setupForSubmit({ actions });
         fireEvent.click(button);
 
-        await waitForElement(() => queryByText("Login failed"));
+        await waitFor(() => queryByText("Login failed"));
         fireEvent.change(passwordInput, changeEvent("updated-P4ssword"));
 
         const alert = queryByText("Login failed");
@@ -222,10 +225,9 @@ describe("LoginPage", () => {
         const { queryByText } = setupForSubmit({ actions });
         fireEvent.click(button);
 
-        await waitForDomChange();
-
-        const spinner = queryByText("Loading...");
-        expect(spinner).not.toBeInTheDocument();
+        await waitFor(() =>
+          expect(queryByText("Loading...")).not.toBeInTheDocument()
+        );
       });
 
       it("hides spinner after api call finishes with error", async () => {
@@ -243,10 +245,9 @@ describe("LoginPage", () => {
         const { queryByText } = setupForSubmit({ actions });
         fireEvent.click(button);
 
-        await waitForDomChange();
-
-        const spinner = queryByText("Loading...");
-        expect(spinner).not.toBeInTheDocument();
+        await waitFor(() =>
+          expect(queryByText("Loading...")).not.toBeInTheDocument()
+        );
       });
 
       it("redirects to homePage after successful login", async () => {
@@ -261,9 +262,7 @@ describe("LoginPage", () => {
         setupForSubmit({ actions, history });
         fireEvent.click(button);
 
-        await waitForDomChange();
-
-        expect(history.push).toHaveBeenCalledWith("/");
+        await waitFor(() => expect(history.push).toHaveBeenCalledWith("/"));
       });
     });
   });

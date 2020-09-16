@@ -236,10 +236,10 @@ describe("UserSignupPage", () => {
       const { queryByText } = setupForSubmit({ actions });
       fireEvent.click(button);
 
-      const errorMessage = await waitForElement(() =>
-        queryByText("Cannot be null")
-      );
-      expect(errorMessage).toBeInTheDocument();
+      await waitFor(() => {
+        errorMessage = queryByText("Cannot be null");
+        expect(errorMessage).toBeInTheDocument();
+      });
     });
 
     it("enables the signup button when password and repeat password have same value", () => {
@@ -288,7 +288,7 @@ describe("UserSignupPage", () => {
       const { queryByText } = setupForSubmit({ actions });
       fireEvent.click(button);
 
-      await waitForElement(() => queryByText("Display Name cannot be null"));
+      await waitFor(() => queryByText("Display Name cannot be null"));
       fireEvent.change(displayNameInput, changeEvent("name updated"));
 
       const errorMessage = queryByText("Cannot be null");
@@ -310,7 +310,7 @@ describe("UserSignupPage", () => {
       const { queryByText } = setupForSubmit({ actions });
       fireEvent.click(button);
 
-      await waitForElement(() => queryByText("Username cannot be null"));
+      await waitFor(() => queryByText("Username cannot be null"));
       fireEvent.change(usernameInput, changeEvent("name updated"));
 
       const errorMessage = queryByText("Cannot be null");
@@ -332,7 +332,7 @@ describe("UserSignupPage", () => {
       const { queryByText } = setupForSubmit({ actions });
       fireEvent.click(button);
 
-      await waitForElement(() => queryByText("Password cannot be null"));
+      await waitFor(() => queryByText("Password cannot be null"));
       fireEvent.change(passwordInput, changeEvent("updated-password"));
 
       const errorMessage = queryByText("Cannot be null");
