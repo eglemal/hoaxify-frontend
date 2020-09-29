@@ -15,6 +15,12 @@ export default function authReducer(state = initialState, action) {
       ...action.payLoad,
       isLoggedIn: true,
     };
+  } else if (action.type === "update-success") {
+    return {
+      ...state,
+      displayName: action.payLoad.displayName,
+      image: action.payLoad.image,
+    };
   }
   return state;
 }
